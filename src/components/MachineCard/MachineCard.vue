@@ -62,7 +62,7 @@
     import { library } from '@fortawesome/fontawesome-svg-core';
     import { faTrash } from '@fortawesome/free-solid-svg-icons';
     import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { DELETERequest } from '@/services/APIRequest';
+    import { DELETERequest } from '@/services/APIRequest';
 
     library.add(faTrash);
 
@@ -95,7 +95,7 @@ import { DELETERequest } from '@/services/APIRequest';
         }
 
         deleteSection(sectionId: number): void {
-            DELETERequest('section/delete/'+sectionId.toString(), async () => {
+            DELETERequest('sections/delete/'+sectionId.toString(), async () => {
                 this.machineSections = await getMachineSections(this.machineId);
             });
         }
