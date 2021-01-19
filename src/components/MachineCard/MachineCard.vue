@@ -45,25 +45,22 @@
                 </div>
             <!-- </draggable> -->
 
-            <!-- <div class="card align-parent" v-if="enableAdding">
-                <div class="card-header align-parent">
-                    <strong class="card-title">Ajouter une section</strong>
-                </div>
-                <select class="form-control content-fluid" v-model="new_section_type">
-                    <option v-for="section_entry in json_sections_data" v-bind:value="section_entry.name">${section_entry.display_name}</option>
-                </select>
-                <button type="button" @click="add_new_section(machine.machine_id)" class="content-fluid btn btn-outline-green">Créer</button>
-            </div> -->
+            <CreateSection :machineId="machineId" />
         </div>
 </template>
 
 <script lang="ts">
     import { Parameter, Section, SectionExtended, SectionParametersInterface } from '@/services/Types';
     import { Component, Vue, Prop } from 'vue-property-decorator';
+    import CreateSection from '../CreateSection/CreateSection.vue';
     import { getMachineSections } from './functions/getMachineSections';
     import { getSectionParameters } from './functions/getSectionParameters';
 
-    @Component
+    @Component({
+        components: {
+            CreateSection
+        }
+    })
     export default class MachineCard extends Vue {
 
         @Prop({ default: -1 })
@@ -84,7 +81,6 @@
         async mounted(): Promise<void> {
             this.machineSections = await getMachineSections(this.machineId);
             this.sectionParameters = await getSectionParameters(this.machineSections);
-            console.log(this.sectionParameters);
         }
 
     }
