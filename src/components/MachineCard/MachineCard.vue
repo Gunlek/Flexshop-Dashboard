@@ -5,45 +5,45 @@
                 <!-- <button type="button" class="btn btn-outline-red align-right" v-if="enableDelete"><i class="fas fa-trash"></i></button> -->
             </div>
             <p>{{ machineReference }} - {{ machineBrand }}</p>
-            <!-- <draggable :list="machine.sections" @change="move_section_in_machine">
-                <div class="card align-parent card-hover" v-for="(section, section_index) in machine.sections" :key="section.section_id" @click="editCard(section)">
+            <!-- <draggable :list="machineSections" @change="/* move_section_in_machine */"> -->
+                <div class="card align-parent card-hover" v-for="section in machineSections" :key="section.section_id" @click="/* editCard(section) */">
                     <div class="card-header align-parent">
-                        <strong class="card-title">${section.section_display_name}</strong>
-                        <button v-bind:key="section_index" type="button" class="btn btn-outline-red align-right" v-if="enableDelete" @click="del_section(section.section_id)"><i class="fas fa-trash"></i></button>
+                        <strong class="card-title">{{ section.section_display_name }}</strong>
+                        <!-- <button v-bind:key="section_index" type="button" class="btn btn-outline-red align-right" v-if="enableDelete" @click="del_section(section.section_id)"><i class="fas fa-trash"></i></button> -->
                     </div>
-                    <div class="align-parent" style="margin: 5px 10px;word-wrap:normal;" v-for="parameter in section.parameters" :key="parameter.parameter_id">
+                    <div class="align-parent" style="margin: 5px 10px;word-wrap:normal;" v-for="parameter in sectionParameters[section.section_id]" :key="parameter.parameter_id">
                         <div class="row">
                             <div class="col-11">
-                                <strong>${parameter.parameter_display_name}:</strong>
+                                <strong>{{ parameter.parameter_display_name }}:</strong>
                                 <div v-if="parameter.parameter_type == 'picto_list'">
-                                    <span v-for="picto in (parameter.parameter_value.split(';'))">
-                                        <img :src="'/img/pictograms/' + picto" width="30px" />
+                                    <span v-for="picto in (parameter.parameter_value.split(';'))" :key="picto">
+                                        <img :src="require('@/assets/img/pictograms/' + picto)" width="30px" />
                                     </span>
                                 </div>
                                 <div v-else-if="parameter.parameter_type == 'block_text'" class="pre-text">
-                                    <pre>${parameter.parameter_value}</pre>
+                                    <pre>{{ parameter.parameter_value }}</pre>
                                 </div>
                                 <div v-else-if="parameter.parameter_type == 'text_list'" class="pre-text">
-                                    <ul v-for="text in (parameter.parameter_value.split(';'))">
-                                        <li>${text}</li>
+                                    <ul v-for="text in (parameter.parameter_value.split(';'))" :key="text">
+                                        <li>{{ text }}</li>
                                     </ul>
                                 </div>
                                 <div v-else-if="parameter.parameter_type == 'link_list'" class="pre-text">
-                                    <ul v-for="text in (parameter.parameter_value.split(';'))">
-                                        <li><a :href="text">${text}</a></li>
+                                    <ul v-for="text in (parameter.parameter_value.split(';'))" :key="text">
+                                        <li><a :href="text">{{ text }}</a></li>
                                     </ul>
                                 </div>
                                 <div v-else-if="parameter.parameter_type == 'image'">
                                     <img v-bind:src="parameter.parameter_value" style="width: 100%; height: auto;" />
                                 </div>
                                 <div v-else>
-                                    ${parameter.parameter_value}
+                                    {{ parameter.parameter_value }}
                                 </div>
                             </div>
-                        </div>            
+                        </div>
                     </div>
                 </div>
-            </draggable> -->
+            <!-- </draggable> -->
 
             <!-- <div class="card align-parent" v-if="enableAdding">
                 <div class="card-header align-parent">
@@ -58,13 +58,10 @@
 </template>
 
 <script lang="ts">
-    import { Parameter, Section } from '@/services/Types';
+    import { Parameter, Section, SectionExtended, SectionParametersInterface } from '@/services/Types';
     import { Component, Vue, Prop } from 'vue-property-decorator';
     import { getMachineSections } from './functions/getMachineSections';
-
-    interface SectionParametersInterface {
-        [sectionId: number]: Parameter[];
-    }
+    import { getSectionParameters } from './functions/getSectionParameters';
 
     @Component
     export default class MachineCard extends Vue {
@@ -81,11 +78,13 @@
         @Prop({ default: "Machine Brand"})
         machineBrand: string;
 
-        machineSections: Section[] = [];
-        sectionParameters: SectionParametersInterface[] = [];
+        machineSections: SectionExtended[] = [];
+        sectionParameters: SectionParametersInterface = {};
 
         async mounted(): Promise<void> {
             this.machineSections = await getMachineSections(this.machineId);
+            this.sectionParameters = await getSectionParameters(this.machineSections);
+            console.log(this.sectionParameters);
         }
 
     }

@@ -45,3 +45,15 @@ export interface Parameter {
     parameter_value: string,
     parameter_sort_index: number
 }
+
+export interface ParameterExtended extends Parameter {
+    parameter_display_name: string,
+    parameter_type: string
+}
+
+export interface SectionParametersInterface {
+    [sectionId: number]: Parameter[];
+}
+export interface SectionExtended extends Section {
+    section_display_name: string
+}
