@@ -2,14 +2,18 @@
     <div class="table-card">
             <div class="align-parent" style="width: 100%">
                 <h4 class="card-title">{{ machineTitle }}</h4>
-                <!-- <button type="button" class="btn btn-outline-red align-right" v-if="enableDelete"><i class="fas fa-trash"></i></button> -->
+                <transition name="fade" mode="out-in">
+                    <button type="button" class="btn btn-outline-red align-right" v-if="deletion" @click="deleteMachine(machineId)"><FontAwesomeIcon icon="trash" /></button>
+                </transition>
             </div>
             <p>{{ machineReference }} - {{ machineBrand }}</p>
             <!-- <draggable :list="machineSections" @change="/* move_section_in_machine */"> -->
-                <div class="card align-parent card-hover" v-for="section in machineSections" :key="section.section_id" @click="/* editCard(section) */">
+                <div class="card align-parent card-hover" v-for="(section, section_index) in machineSections" :key="section.section_id" @click="/* editCard(section) */">
                     <div class="card-header align-parent">
                         <strong class="card-title">{{ section.section_display_name }}</strong>
-                        <!-- <button v-bind:key="section_index" type="button" class="btn btn-outline-red align-right" v-if="enableDelete" @click="del_section(section.section_id)"><i class="fas fa-trash"></i></button> -->
+                        <transition name="fade" mode="out-in">
+                            <button v-bind:key="section_index" type="button" class="btn btn-outline-red align-right" v-if="deletion" @click="deleteSection(section.section_id)"><FontAwesomeIcon icon="trash" /></button>
+                        </transition>
                     </div>
                     <div class="align-parent" style="margin: 5px 10px;word-wrap:normal;" v-for="parameter in sectionParameters[section.section_id]" :key="parameter.parameter_id">
                         <div class="row">
@@ -44,8 +48,8 @@
                     </div>
                 </div>
             <!-- </draggable> -->
-
-            <CreateSection :machineId="machineId" />
+            
+            <CreateSection :machineId="machineId" v-if="addition"/>
         </div>
 </template>
 
@@ -55,10 +59,17 @@
     import CreateSection from '../CreateSection/CreateSection.vue';
     import { getMachineSections } from './functions/getMachineSections';
     import { getSectionParameters } from './functions/getSectionParameters';
+    import { library } from '@fortawesome/fontawesome-svg-core';
+    import { faTrash } from '@fortawesome/free-solid-svg-icons';
+    import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { DELETERequest } from '@/services/APIRequest';
+
+    library.add(faTrash);
 
     @Component({
         components: {
-            CreateSection
+            CreateSection,
+            FontAwesomeIcon
         }
     })
     export default class MachineCard extends Vue {
@@ -81,6 +92,26 @@
         async mounted(): Promise<void> {
             this.machineSections = await getMachineSections(this.machineId);
             this.sectionParameters = await getSectionParameters(this.machineSections);
+        }
+
+        deleteSection(sectionId: number): void {
+            DELETERequest('section/delete/'+sectionId.toString(), async () => {
+                this.machineSections = await getMachineSections(this.machineId);
+            });
+        }
+
+        deleteMachine(machineId: number): void {
+            DELETERequest('machines/delete/'+machineId.toString(), () => {
+                this.$store.dispatch("refreshMachines");
+            });
+        }
+
+        get addition(){
+            return this.$store.state.enableAdding;
+        }
+
+        get deletion(){
+            return this.$store.state.enableDelete;
         }
 
     }
