@@ -50,7 +50,6 @@
         mounted(): void {
             GETRequest('category/list', (status: number, results: Category[]) => {
                 this.existingCategories = results;
-                console.log(this.existingCategories);
             });
         }
     }

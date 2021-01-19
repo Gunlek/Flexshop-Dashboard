@@ -30,3 +30,18 @@ export interface Slide {
     slide_image: string,
     slide_description: string
 }
+
+export interface Section {
+    section_id: number,
+    section_machine: number,
+    section_type: string,
+    section_sort_index: number
+}
+
+export interface Parameter {
+    parameter_id: number,
+    parameter_section: number,
+    parameter_name: string,
+    parameter_value: string,
+    parameter_sort_index: number
+}

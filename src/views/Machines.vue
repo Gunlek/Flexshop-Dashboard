@@ -12,7 +12,17 @@
                     </div>
                     <div class="col-4"></div> -->
                 </div>
-
+                
+                
+                <MachineCard 
+                    v-for="machine in machineList" 
+                    v-bind:key="machine.machine_id" 
+                    :machineId="machine.machine_id" 
+                    :machineTitle="machine.machine_title" 
+                    :machineBrand="machine.machine_brand" 
+                    :machineReference="machine.machine_reference" 
+                />
+                
                 <CreateMachine />
             </div>
         </div>
@@ -22,11 +32,23 @@
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
     import CreateMachine from '@/components/CreateMachine/CreateMachine.vue';
+    import MachineCard from '@/components/MachineCard/MachineCard.vue';
+    import { Machine } from '@/services/Types';
+    import { getMachineList } from './functions/getMachineList';
 
     @Component({
         components: {
-            CreateMachine
+            CreateMachine,
+            MachineCard
         }
     })
-    export default class Machines extends Vue {}
+    export default class Machines extends Vue {
+
+        machineList: Machine[] = [];
+
+        async mounted(): Promise<void> {
+            this.machineList = await getMachineList();
+        }
+
+    }
 </script>
