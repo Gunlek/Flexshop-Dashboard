@@ -21,7 +21,7 @@
                                 <strong>{{ parameter.parameter_display_name }}:</strong>
                                 <div v-if="parameter.parameter_type == 'picto_list'">
                                     <span v-for="picto in (parameter.parameter_value.split(';'))" :key="picto+'#'+section.section_id+'#'+parameter.parameter_id">
-                                        <img :src="require('@/assets/img/pictograms/' + picto)" width="30px" />
+                                        <img :src="picto != '' && require('@/assets/img/pictograms/' + picto)" width="30px" />
                                     </span>
                                 </div>
                                 <div v-else-if="parameter.parameter_type == 'block_text'" class="pre-text">
