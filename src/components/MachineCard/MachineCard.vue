@@ -8,7 +8,7 @@
             </div>
             <p>{{ machineReference }} - {{ machineBrand }}</p>
             <!-- <draggable :list="machineSections" @change="/* move_section_in_machine */"> -->
-                <div class="card align-parent card-hover" v-for="(section, section_index) in machineSections" :key="section.section_id" @click="/* editCard(section) */">
+                <div class="card align-parent card-hover" v-for="section in machineSections" :key="section.section_id" @click="/* editCard(section) */">
                     <div class="card-header align-parent">
                         <strong class="card-title">{{ section.section_display_name }}</strong>
                         <transition name="fade" mode="out-in">
@@ -20,7 +20,7 @@
                             <div class="col-11">
                                 <strong>{{ parameter.parameter_display_name }}:</strong>
                                 <div v-if="parameter.parameter_type == 'picto_list'">
-                                    <span v-for="picto in (parameter.parameter_value.split(';'))" :key="picto">
+                                    <span v-for="picto in (parameter.parameter_value.split(';'))" :key="picto+'#'+section.section_id+'#'+parameter.parameter_id">
                                         <img :src="require('@/assets/img/pictograms/' + picto)" width="30px" />
                                     </span>
                                 </div>
@@ -28,12 +28,12 @@
                                     <pre>{{ parameter.parameter_value }}</pre>
                                 </div>
                                 <div v-else-if="parameter.parameter_type == 'text_list'" class="pre-text">
-                                    <ul v-for="text in (parameter.parameter_value.split(';'))" :key="text">
+                                    <ul v-for="(text, index) in (parameter.parameter_value.split(';'))" :key="text+'#'+section.section_id+parameter.parameter_id+index">
                                         <li>{{ text }}</li>
                                     </ul>
                                 </div>
                                 <div v-else-if="parameter.parameter_type == 'link_list'" class="pre-text">
-                                    <ul v-for="text in (parameter.parameter_value.split(';'))" :key="text">
+                                    <ul v-for="(text, index) in (parameter.parameter_value.split(';'))" :key="text+'#'+section.section_id+parameter.parameter_id+index">
                                         <li><a :href="text">{{ text }}</a></li>
                                     </ul>
                                 </div>

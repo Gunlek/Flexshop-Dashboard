@@ -16,7 +16,7 @@
                 
                 <MachineCard 
                     v-for="machine in $store.state.machines" 
-                    v-bind:key="machine.machine_id" 
+                    :key="machine.machine_id" 
                     :machineId="machine.machine_id" 
                     :machineTitle="machine.machine_title" 
                     :machineBrand="machine.machine_brand" 
