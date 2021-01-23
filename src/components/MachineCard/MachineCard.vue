@@ -3,7 +3,7 @@
             <div class="align-parent" style="width: 100%">
                 <h4 class="card-title">{{ machineTitle }}</h4>
                 <transition name="fade" mode="out-in">
-                    <button type="button" class="btn btn-outline-red align-right" v-if="deletion" @click="deleteMachine(machineId)"><FontAwesomeIcon icon="trash" /></button>
+                    <button type="button" class="btn btn-outline-red align-right" v-if="deletion" @click="deleteMachine(machineId)"><vue-feather type="trash"></vue-feather></button>
                 </transition>
             </div>
             <p>{{ machineReference }} - {{ machineBrand }}</p>
@@ -12,7 +12,7 @@
                     <div class="card-header align-parent">
                         <strong class="card-title">{{ section.section_display_name }}</strong>
                         <transition name="fade" mode="out-in">
-                            <button v-bind:key="section_index" type="button" class="btn btn-outline-red align-right" v-if="deletion" @click="deleteSection(section.section_id)"><FontAwesomeIcon icon="trash" /></button>
+                            <button type="button" class="btn btn-outline-red align-right" v-if="deletion" @click="deleteSection(section.section_id)"><vue-feather type="trash"></vue-feather></button>
                         </transition>
                     </div>
                     <div class="align-parent" style="margin: 5px 10px;word-wrap:normal;" v-for="parameter in sectionParameters[section.section_id]" :key="parameter.parameter_id">
@@ -54,22 +54,18 @@
 </template>
 
 <script lang="ts">
-    import { Parameter, Section, SectionExtended, SectionParametersInterface } from '@/services/Types';
+    import { SectionExtended, SectionParametersInterface } from '@/services/Types';
     import { Component, Vue, Prop } from 'vue-property-decorator';
     import CreateSection from '../CreateSection/CreateSection.vue';
     import { getMachineSections } from './functions/getMachineSections';
     import { getSectionParameters } from './functions/getSectionParameters';
-    import { library } from '@fortawesome/fontawesome-svg-core';
-    import { faTrash } from '@fortawesome/free-solid-svg-icons';
-    import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
     import { DELETERequest } from '@/services/APIRequest';
-
-    library.add(faTrash);
+    import VueFeather from 'vue-feather';
 
     @Component({
         components: {
             CreateSection,
-            FontAwesomeIcon
+            VueFeather
         }
     })
     export default class MachineCard extends Vue {
