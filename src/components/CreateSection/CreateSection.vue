@@ -29,8 +29,9 @@
             this.sectionType = this.jsonSections[firstSection].name;
         }
 
-        createSection(): void {
-            createSection(this.machineId, this.sectionType);
+        async createSection(): Promise<void> {
+            await createSection(this.machineId, this.sectionType);
+            this.$store.dispatch("refreshMachineSections");
         }
 
         get addition(){

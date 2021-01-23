@@ -8,7 +8,7 @@
             </div>
             <p>{{ machineReference }} - {{ machineBrand }}</p>
             <!-- <draggable :list="machineSections" @change="/* move_section_in_machine */"> -->
-                <div class="card align-parent card-hover" v-for="section in machineSections" :key="section.section_id" @click="/* editCard(section) */">
+                <div class="card align-parent card-hover" v-for="section in this.$store.state.machineSections[machineId]" :key="section.section_id" @click="/* editCard(section) */">
                     <div class="card-header align-parent">
                         <strong class="card-title">{{ section.section_display_name }}</strong>
                         <transition name="fade" mode="out-in">
@@ -54,10 +54,9 @@
 </template>
 
 <script lang="ts">
-    import { SectionExtended, SectionParametersInterface } from '@/services/Types';
-    import { Component, Vue, Prop } from 'vue-property-decorator';
+    import { SectionParametersInterface } from '@/services/Types';
+    import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
     import CreateSection from '../CreateSection/CreateSection.vue';
-    import { getMachineSections } from './functions/getMachineSections';
     import { getSectionParameters } from './functions/getSectionParameters';
     import { DELETERequest } from '@/services/APIRequest';
     import VueFeather from 'vue-feather';
@@ -82,17 +81,28 @@
         @Prop({ default: "Machine Brand"})
         machineBrand: string;
 
-        machineSections: SectionExtended[] = [];
+        // machineSections: SectionExtended[] = [];
         sectionParameters: SectionParametersInterface = {};
 
         async mounted(): Promise<void> {
-            this.machineSections = await getMachineSections(this.machineId);
-            this.sectionParameters = await getSectionParameters(this.machineSections);
+            if(!this.$store.state.machineSections[this.machineId])
+                this.$store.dispatch("refreshMachineSections");
+            else
+                this.sectionParameters = await getSectionParameters(this.$store.state.machineSections[this.machineId]);
+        }
+
+        get machineSections() {
+            return this.$store.state.machineSections;
+        }
+
+        @Watch('$store.state.machineSections')
+        async onMachineSectionsChanged(value, oldValue){
+            this.sectionParameters = await getSectionParameters(value[this.machineId]);
         }
 
         deleteSection(sectionId: number): void {
             DELETERequest('sections/delete/'+sectionId.toString(), async () => {
-                this.machineSections = await getMachineSections(this.machineId);
+                this.$store.dispatch("refreshMachineSections");
             });
         }
 
