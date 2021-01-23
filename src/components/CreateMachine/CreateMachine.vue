@@ -43,7 +43,7 @@
                 "machine_category": this.machineCategory,
                 "machine_image": this.machineImage
             }, () => {
-                alert('success');
+                this.$store.dispatch("refreshMachines");
             });
         }
 
