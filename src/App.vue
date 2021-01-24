@@ -24,6 +24,8 @@
         <router-view />
       </transition>
     </main>
+
+    <footer>Développé par Hard Win's 58Li218 et Squall's 4Li218</footer>
   </div>
 </template>
 
