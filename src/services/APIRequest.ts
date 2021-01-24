@@ -7,7 +7,7 @@ export const PUTRequest = (path: string, payload: any, callback? : any) => {
     httpRequest.onreadystatechange = () => {
         if(httpRequest.readyState === 4){
             if(httpRequest.status >= 200 && httpRequest.status <= 300){
-                callback(httpRequest.status);
+                callback != null && callback(httpRequest.status);
             }
         }
     };
