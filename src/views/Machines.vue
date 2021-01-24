@@ -4,13 +4,13 @@
             <div class="horizontal-table table-body">
                 <div class="row">
                     <div class="col-4"><h1 class="table-title">Gestion des machines</h1></div>
-                    <div class="col-2" style="position: relative;">
-                        <button type="button" @click="updateDelete()" class="btn btn-outline-red" style="position: absolute;top:50%;transform: translateY(-50%);">Activer la suppresion</button>
+                    <div class="col-2"></div>
+                    <div class="col-3" style="position: relative;">
+                        <button type="button" @click="updateDelete()" class="btn btn-outline-red" style="max-width: 100%; position: absolute; top: 50%; transform: translateY(-50%);">Activer la suppresion</button>
                     </div>
-                    <div class="col-2" style="position: relative;">
-                        <button type="button" @click="updateAdding()" class="btn btn-outline-green" style="position: absolute;top:50%;transform: translateY(-50%);">Activer l'ajout</button>
+                    <div class="col-3" style="position: relative;">
+                        <button type="button" @click="updateAdding()" class="btn btn-outline-green" style="max-width: 100%; position: absolute; top: 50%; transform: translateY(-50%);">Activer l'ajout</button>
                     </div>
-                    <div class="col-4"></div>
                 </div>
                 
                 
@@ -25,6 +25,8 @@
                 
                 <CreateMachine />
             </div>
+
+            <EditParameterModal />
         </div>
     </transition>
 </template>
@@ -34,12 +36,13 @@
     import CreateMachine from '@/components/CreateMachine/CreateMachine.vue';
     import MachineCard from '@/components/MachineCard/MachineCard.vue';
     import { Machine } from '@/services/Types';
-    import { getMachineList } from './functions/getMachineList';
+    import EditParameterModal from '@/components/EditParameterModal/EditParameterModal.vue';
 
     @Component({
         components: {
             CreateMachine,
-            MachineCard
+            MachineCard,
+            EditParameterModal
         }
     })
     export default class Machines extends Vue {

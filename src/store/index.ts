@@ -10,7 +10,10 @@ export default new Vuex.Store({
     enableDelete: true,
     enableAdding: true,
     machines: [],
-    machineSections: {}
+    machineSections: {},
+    editedSection: null,
+    editedParameters: null,
+    edition: false
   },
   mutations: {
     setDeletion(state, val): void {
@@ -39,6 +42,18 @@ export default new Vuex.Store({
       
       await Promise.all(promises);
       state.machineSections = sections;
+    },
+
+    setEditedSection(state, payload: {
+      section: any;
+      parameters: any;
+    }): void {
+      state.editedSection = payload.section;
+      state.editedParameters = payload.parameters;
+    },
+
+    editionEnabled(state, enabled): void {
+      state.edition = enabled;
     }
   },
   actions: {
@@ -56,6 +71,18 @@ export default new Vuex.Store({
 
     refreshMachineSections(context): void {
       context.commit("getMachineSections");
+    },
+
+    editSection(context, payload: {
+      section: any;
+      parameters: any;
+    }): void {
+      context.commit("setEditedSection", payload);
+      context.commit("editionEnabled", true);
+    },
+
+    stopEdition(context): void {
+      context.commit("editionEnabled", false);
     }
   },
   modules: {
