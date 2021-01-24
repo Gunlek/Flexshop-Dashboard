@@ -53,6 +53,7 @@
     import PictoList from './EditingComponents/PictoList.vue';
     import TextList from './EditingComponents/TextList.vue';
     import LinkList from './EditingComponents/LinkList.vue';
+    import { PUTRequest } from '@/services/APIRequest';
 
     @Component({
         components: {
@@ -76,7 +77,17 @@
         }
 
         updateSection(){
-            //TODO
+            document.querySelectorAll(".edition_input").forEach((el) => {
+                const update_id = el.getAttribute("name");
+                const update_value = el.value;
+                
+                PUTRequest("parameters/update/" + update_id, {
+                    parameter_value: update_value
+                });
+            });
+
+            this.$store.dispatch("refreshMachineSections");
+            this.hideEditCard();
         }
 
     }
