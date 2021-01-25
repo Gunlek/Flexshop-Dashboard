@@ -26,7 +26,9 @@ export default new Vuex.Store({
     editedSection: null as Section|null,
     editedParameters: null as Parameter[]|null,
     edition: false,
-    tutorials: [] as Tutorial[]
+    tutorials: {} as {
+      [machineId: number]: Tutorial;
+    }
   },
   mutations,
   actions

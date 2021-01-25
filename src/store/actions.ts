@@ -8,6 +8,7 @@ import refreshWorkshopsCategories from './actions/refreshWorkshopsCategories';
 import setAddition from './actions/setAddition';
 import setDeletion from './actions/setDeletion';
 import stopEdition from './actions/stopEdition';
+import refreshTutorials from './actions/refreshTutorials';
 
 export default {
     editSection,
@@ -19,5 +20,6 @@ export default {
     refreshWorkshopsCategories,
     setAddition,
     setDeletion,
-    stopEdition
+    stopEdition,
+    refreshTutorials
 }

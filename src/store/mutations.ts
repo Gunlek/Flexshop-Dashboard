@@ -8,6 +8,7 @@ import getWorkshopsCategories from './mutations/getWorkshopsCategories';
 import setAddition from './mutations/setAddition';
 import setDeletion from './mutations/setDeletion';
 import setEditedSection from './mutations/setEditedSection';
+import getTutorials from './mutations/getTutorials';
 
 export default {
     editionEnabled,
@@ -19,5 +20,6 @@ export default {
     getWorkshopsCategories,
     setAddition,
     setDeletion,
-    setEditedSection
+    setEditedSection,
+    getTutorials
 }
