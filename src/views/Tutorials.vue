@@ -38,27 +38,7 @@
                         </div>
                     <!-- </draggable> -->
 
-                    <!-- <div class="card" v-if="enableAdding">
-                        <div class="card-header align-parent">
-                            <strong class="card-title">Ajouter une slide</strong>
-                        </div>
-                        <div class="form-group">
-                            <label>Titre de la slide</label>
-                            <input type="text" class="form-control" v-model="new_slide_title"/>
-                        </div>
-                        <div class="form-group">
-                            <label>Image associée</label>
-                            <div class="file-selector">
-                                <label v-bind:for="tutorial.machine_id" class="btn btn-outline-blue">${new_slide_image_name}</label>
-                                <input type="file" @change="processFile" v-bind:id="tutorial.machine_id" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea class="form-control" rows="5" v-model="new_slide_description"></textarea>
-                        </div>
-                        <button type="button" @click="add_slide(tutorial.machine_id)" class="content-fluid btn btn-outline-green">Ajouter</button>
-                    </div> -->
+                    <CreateSlide v-if="addition" :machineId="tutorial.machine_id" :slideIndex="tutorial.machine_slides.length"/>
                 </div>
             </div>
 
@@ -96,11 +76,14 @@
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
     import VueFeather from 'vue-feather';
-import { DELETERequest } from '@/services/APIRequest';
+    import { DELETERequest } from '@/services/APIRequest';
+    import CreateSlide from '@/components/CreateSlide.vue';
+import { Slide } from '@/services/Types';
 
     @Component({
         components: {
-            VueFeather
+            VueFeather,
+            CreateSlide
         }
     })
     export default class Tutorials extends Vue {
@@ -117,10 +100,14 @@ import { DELETERequest } from '@/services/APIRequest';
             this.$store.dispatch("setDeletion", !this.$store.state.enableDelete);
         }
 
-        deleteSlide(slideId): void {
+        deleteSlide(slideId: number): void {
             DELETERequest(`slides/delete/${slideId}`, () => {
                 this.$store.dispatch("refreshTutorials");
             })
+        }
+
+        editSlide(slide: Slide): void {
+            // TODO
         }
 
         get addition(){
