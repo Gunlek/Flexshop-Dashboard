@@ -1,22 +1,7 @@
 <template>
   <div id="app">
     <header>
-        <nav>
-            <h2 class="brand-name">Flexshop</h2>
-            <hr>
-            <ul>
-              <li><router-link to="/workshops">Ateliers</router-link></li>
-              <li><router-link to="/categories">Catégories</router-link></li>
-              <li><router-link to="/machines">Machines</router-link></li>
-            </ul>
-
-            <div class="bottom">
-                <ul>
-                    <li><router-link to="/settings">Options</router-link></li>
-                    <li><router-link to="/credits">Crédits</router-link></li>
-                </ul>
-            </div>
-        </nav>
+        <Sidebar />
     </header>
 
     <main>
@@ -28,6 +13,20 @@
     <footer>Développé par Hard Win's 58Li218 et Squall's 4Li218</footer>
   </div>
 </template>
+
+<script lang="ts">
+  import { Component, Vue } from 'vue-property-decorator';
+  import Sidebar from '@/components/Sidebar.vue';
+
+  @Component({
+    components: {
+      Sidebar
+    }
+  })
+  export default class App extends Vue {
+
+  }
+</script>
 
 <style>
   @import 'assets/css/style.css';
