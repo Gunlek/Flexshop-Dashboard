@@ -1,7 +1,7 @@
 import { GETRequest } from "@/services/APIRequest";
 import { Machine } from "@/services/Types";
 
-export const getMachineList = async () => {
+export const getMachineList = async (): Promise<Machine[]> => {
     let machineList: Machine[] = [];
     const requestPromise = new Promise((resolve, reject) => {
         GETRequest('machines/list', (status: number, results: Machine[]) => {
