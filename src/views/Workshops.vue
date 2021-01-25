@@ -45,15 +45,8 @@
                         <CreateMachine :vertical="true" v-if="addition" :fixedCategory="category.category_id" />
                     </div>
 
-                    <!-- <div class="card align-parent" v-if="enableAdding">
-                        <div class="card-header align-parent">
-                            <strong class="card-title">Ajouter une catégorie</strong>
-                        </div>
-                        <input type="text" class="form-control content-fluid" v-model="new_category_title" placeholder="Nom de la catégorie..." />
-                        <button type="button" @click="add_new_category(workshop.workshop_id)" class="content-fluid btn btn-outline-green">Créer</button>
-                    </div> -->
+                    <CreateCategory v-if="addition" :workshopId="workshop.workshop_id" />
                 </div>
-                
             </div>
         </div>
     </transition>
@@ -63,11 +56,14 @@
     import { Component, Vue, Watch } from 'vue-property-decorator';
     import VueFeather from 'vue-feather';
     import CreateMachine from '@/components/CreateMachine/CreateMachine.vue';
+    import CreateCategory from '@/components/CreateCategory.vue';
+    import { DELETERequest } from '@/services/APIRequest';
 
     @Component({
         components: {
             VueFeather,
-            CreateMachine
+            CreateMachine,
+            CreateCategory
         }
     })
     export default class Workshops extends Vue {
@@ -89,16 +85,28 @@
         }
         
 
-        deleteWorkshop(){
-            // TODO
+        deleteWorkshop(workshopId: number){
+            // TODO: Should be recursive (delete associated categories and machines)
+            DELETERequest(`workshops/delete/${workshopId}`, () => {
+                this.$store.dispatch("refreshWorkshops");
+                this.$store.dispatch("refreshMachines");
+            });
         }
 
-        deleteCategory(){
-            // TODO
+        deleteCategory(categoryId: number){
+            // TODO: Should be recursive (delete associated machines)
+            DELETERequest(`category/delete/${categoryId}`, () => {
+                this.$store.dispatch("refreshWorkshops");
+                this.$store.dispatch("refreshMachines");
+            });
         }
 
-        deleteMachine(){
-            // TODO
+        deleteMachine(machineId: number){
+            // TODO: Should be recursive
+            DELETERequest(`machines/delete/${machineId}`, () => {
+                this.$store.dispatch("refreshWorkshops");
+                this.$store.dispatch("refreshMachines");
+            });
         }
 
         updateAdding(): void {
