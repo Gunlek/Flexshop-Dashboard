@@ -3,7 +3,7 @@ import { Category } from "@/services/Types";
 
 export const getCategoryList = async (): Promise<Category[]> => {
     let categoryList: Category[] = [];
-    const requestPromise = new Promise((resolve, reject) => {
+    const requestPromise = new Promise(resolve => {
         GETRequest('category/list', (status: number, results: Category[]) => {
             categoryList = results
             resolve(categoryList);

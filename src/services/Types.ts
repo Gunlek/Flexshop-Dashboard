@@ -57,3 +57,9 @@ export interface SectionParametersInterface {
 export interface SectionExtended extends Section {
     section_display_name: string
 }
+
+export interface ParameterDescription {
+    name: string;
+    display_name: string;
+    type: string;
+}

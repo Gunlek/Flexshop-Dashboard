@@ -1,6 +1,5 @@
 import { getMachineSections } from '@/components/MachineCard/functions/getMachineSections';
-import { GETRequest } from '@/services/APIRequest';
-import { Category, Machine } from '@/services/Types';
+import { Category, Machine, Parameter, Section, Workshop } from '@/services/Types';
 import { getCategoryList } from '@/views/functions/getCategoryList';
 import { getMachineList } from '@/views/functions/getMachineList';
 import { getWorkshopList } from '@/views/functions/getWorkshopList';
@@ -13,14 +12,20 @@ export default new Vuex.Store({
   state: {
     enableDelete: true,
     enableAdding: true,
-    workshops: [],
-    workshopsCategories: {},
-    categoriesMachines: {},
-    machines: [],
-    machineSections: {},
-    categories: [],
-    editedSection: null,
-    editedParameters: null,
+    workshops: [] as Workshop[],
+    workshopsCategories: {} as {
+      [workshopID: number]: Category[];
+    },
+    categoriesMachines: {} as {
+      [categoryId: number]: Machine[];
+    },
+    machines: [] as Machine[],
+    machineSections: {} as {
+      [sectionId: number]: Machine[];
+    },
+    categories: [] as Category[],
+    editedSection: null as Section|null,
+    editedParameters: null as Parameter[]|null,
     edition: false
   },
   mutations: {
@@ -41,7 +46,7 @@ export default new Vuex.Store({
         [categoryId: number]: Machine[];
       } = {};
       const promise = new Promise(resolve => {
-        state.machines.map((machine, index) => {
+        state.machines.map((machine: Machine, index) => {
           if(machine.machine_category in categoriesMachines)
             categoriesMachines[machine.machine_category].push(machine);
           else
@@ -61,7 +66,7 @@ export default new Vuex.Store({
         [workshopId: number]: Category[];
       } = {};
       const promise = new Promise(resolve => {
-        state.categories.map((category, index) => {
+        state.categories.map((category: Category, index) => {
           if(category.category_workshop in workshopsCategories)
             workshopsCategories[category.category_workshop].push(category);
           else
@@ -86,7 +91,7 @@ export default new Vuex.Store({
 
     async getMachineSections(state): Promise<void> {
       const sections = {};
-      const promises = state.machines.map((machine) => 
+      const promises = state.machines.map((machine: Machine) => 
         new Promise(resolve => {
           getMachineSections(machine.machine_id)
             .then((section) => {
@@ -101,8 +106,8 @@ export default new Vuex.Store({
     },
 
     setEditedSection(state, payload: {
-      section: any;
-      parameters: any;
+      section: Section;
+      parameters: Parameter[];
     }): void {
       state.editedSection = payload.section;
       state.editedParameters = payload.parameters;
@@ -146,8 +151,8 @@ export default new Vuex.Store({
     },
 
     editSection(context, payload: {
-      section: any;
-      parameters: any;
+      section: Section;
+      parameters: Parameter[];
     }): void {
       context.commit("setEditedSection", payload);
       context.commit("editionEnabled", true);

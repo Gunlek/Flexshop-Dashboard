@@ -25,9 +25,9 @@
 
         currentPage = this.$route.name;
         
-        @Watch("$route")
-        routeChange(to, from){
-            this.currentPage = to.name;
+        @Watch("$route.name")
+        routeChange(to: string){
+            this.currentPage = to;
         }
 
     }

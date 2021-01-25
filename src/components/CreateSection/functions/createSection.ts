@@ -1,5 +1,6 @@
 import { GETRequest, POSTRequest } from "@/services/APIRequest"
 import sectionConfig from '@/components/MachineCard/functions/sections_description';
+import { ParameterDescription, Section } from "@/services/Types";
 
 export const createSection = (sectionMachine: number, sectionType: string): Promise<void> =>
     new Promise(resolve => {
@@ -7,9 +8,9 @@ export const createSection = (sectionMachine: number, sectionType: string): Prom
             section_machine: sectionMachine,
             section_type: sectionType
         }, () => {
-            GETRequest('sections/list', async (status: number, results: any) => {
+            GETRequest('sections/list', async (status: number, results: Section[]) => {
                 const newId = results[results.length - 1].section_id;
-                const parametersPromises = sectionConfig[sectionType].parameters.forEach((parameter: any) => {
+                sectionConfig[sectionType].parameters.forEach((parameter: ParameterDescription) => {
                         POSTRequest('parameters/add', {
                             parameter_section: newId,
                             parameter_name: parameter.name,

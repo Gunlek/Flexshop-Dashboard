@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts">
-    import { SectionExtended, SectionParametersInterface } from '@/services/Types';
+    import { Parameter, Section, SectionParametersInterface } from '@/services/Types';
     import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
     import CreateSection from '../CreateSection/CreateSection.vue';
     import { getSectionParameters } from './functions/getSectionParameters';
@@ -70,16 +70,16 @@
     export default class MachineCard extends Vue {
 
         @Prop({ default: -1 })
-        machineId: number;
+        machineId!: number;
 
         @Prop({ default: "Machine Title"})
-        machineTitle: string;
+        machineTitle!: string;
 
         @Prop({ default: "Machine Reference"})
-        machineReference: string;
+        machineReference!: string;
 
         @Prop({ default: "Machine Brand"})
-        machineBrand: string;
+        machineBrand!: string;
 
         sectionParameters: SectionParametersInterface = {};
 
@@ -90,7 +90,7 @@
                 this.sectionParameters = await getSectionParameters(this.$store.state.machineSections[this.machineId]);
         }
 
-        editSection(section: any, parameters: any) {
+        editSection(section: Section, parameters: Parameter[]) {
             this.$store.dispatch("editSection", {
                 section: section,
                 parameters: parameters
@@ -102,7 +102,7 @@
         }
 
         @Watch('$store.state.machineSections')
-        async onMachineSectionsChanged(value, oldValue){
+        async onMachineSectionsChanged(value){
             this.sectionParameters = await getSectionParameters(value[this.machineId]);
         }
 

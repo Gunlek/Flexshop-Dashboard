@@ -79,8 +79,8 @@
         updateSection(){
             document.querySelectorAll(".edition_input").forEach((el) => {
                 const update_id = el.getAttribute("name");
-                const update_value = el.value;
-                
+                const update_value = (el as HTMLInputElement).value;
+
                 PUTRequest("parameters/update/" + update_id, {
                     parameter_value: update_value
                 });

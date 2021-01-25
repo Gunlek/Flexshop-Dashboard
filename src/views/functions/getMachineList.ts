@@ -3,7 +3,7 @@ import { Machine } from "@/services/Types";
 
 export const getMachineList = async (): Promise<Machine[]> => {
     let machineList: Machine[] = [];
-    const requestPromise = new Promise((resolve, reject) => {
+    const requestPromise = new Promise(resolve => {
         GETRequest('machines/list', (status: number, results: Machine[]) => {
             machineList = results
             resolve(machineList);

@@ -18,7 +18,7 @@
         categoryTitle = "";
 
         @Prop()
-        workshopId: number;
+        workshopId!: number;
 
         createCategory(){
             POSTRequest("category/add", {

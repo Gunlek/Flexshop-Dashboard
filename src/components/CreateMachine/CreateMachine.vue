@@ -36,10 +36,10 @@
         existingCategories: Category[] = [];
 
         @Prop({default: false})
-        vertical: boolean;
+        vertical!: boolean;
 
         @Prop({ default: -1 })
-        fixedCategory: number;
+        fixedCategory!: number;
 
         createMachine(): void {
             if(this.fixedCategory > 0)

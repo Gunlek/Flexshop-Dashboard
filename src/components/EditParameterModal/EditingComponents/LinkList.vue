@@ -32,10 +32,10 @@
     export default class LinkList extends Vue {
 
         @Prop({default: ""})
-        name: string;
+        name!: string;
 
         @Prop({default: ""})
-        value: string;
+        value!: string;
 
         new_text = "";
         text_list: string[] = [];

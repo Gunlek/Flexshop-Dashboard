@@ -1,5 +1,5 @@
 import { GETRequest } from "@/services/APIRequest";
-import { Parameter, ParameterExtended, Section, SectionParametersInterface } from "@/services/Types";
+import { ParameterDescription, ParameterExtended, Section, SectionParametersInterface } from "@/services/Types";
 import sectionDescription from "./sections_description";
 
 interface SectionWithParameters extends Section {
@@ -19,7 +19,7 @@ export const getSectionParameters = async (sections: Section[]): Promise<Section
                 const parameters = results.parameters;
                 const extendedParameters: ParameterExtended[] = Object.keys(results.parameters).map((key: string) => {
                     let parameter: ParameterExtended = parameters[key];
-                    parametersInSection.forEach((parameterDescription: any) => {
+                    parametersInSection.forEach((parameterDescription: ParameterDescription) => {
                         if(parameterDescription.name === parameter.parameter_name){
                             parameter = { 
                                 ...parameter,

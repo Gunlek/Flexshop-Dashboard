@@ -19,7 +19,7 @@
     export default class CreateSection extends Vue {
 
         @Prop({ default: -1 })
-        machineId: number;
+        machineId!: number;
 
         jsonSections = jsonSectionData;
         sectionType = "";

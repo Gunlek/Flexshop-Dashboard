@@ -2,7 +2,11 @@ import { buildInlinePayload } from '@/services/BuildInlinePayload';
 
 const baseAPI = "http://127.0.0.1:58/";
 
-export const PUTRequest = (path: string, payload: any, callback? : any) => {
+interface PlainJSON {
+    [key: string]: string|number|null;
+}
+
+export const PUTRequest = (path: string, payload: PlainJSON, callback? : (status?: number) => void) => {
     const httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = () => {
         if(httpRequest.readyState === 4){
@@ -20,7 +24,7 @@ export const PUTRequest = (path: string, payload: any, callback? : any) => {
     httpRequest.send(buildInlinePayload(payload));
 }
 
-export const POSTRequest = (path: string, payload: any, callback? : any) => {
+export const POSTRequest = (path: string, payload: PlainJSON, callback? : (status?: number) => void) => {
     const httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = () => {
         if(httpRequest.readyState === 4){
@@ -38,7 +42,7 @@ export const POSTRequest = (path: string, payload: any, callback? : any) => {
     httpRequest.send(buildInlinePayload(payload));
 }
 
-export const DELETERequest = (path: string, callback? : any) => {
+export const DELETERequest = (path: string, callback? : (status?: number) => void) => {
     const httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = () => {
         if(httpRequest.readyState === 4){
@@ -51,7 +55,7 @@ export const DELETERequest = (path: string, callback? : any) => {
     httpRequest.send();
 }
 
-export const GETRequest = (path: string, callback? : any) => {
+export const GETRequest = (path: string, callback? : (status, results) => void) => {
     const httpRequest = new XMLHttpRequest();
     httpRequest.onreadystatechange = () => {
         if(httpRequest.readyState === 4){

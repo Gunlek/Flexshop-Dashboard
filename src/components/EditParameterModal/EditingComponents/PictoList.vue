@@ -17,10 +17,10 @@
     export default class PictoList extends Vue {
 
         @Prop({default: ""})
-        name: string;
+        name!: string;
 
         @Prop({default: ""})
-        value: string;
+        value!: string;
         
         pictograms: string[] = ["picto_general.png", "picto_glasses.png", "picto_gloves.png", "picto_harness.png", "picto_helmet.png", "picto_mask.png", "picto_noise.png", "picto_notice.png", "picto_pedestrian.png", "picto_shoes.png", "picto_suit.png", "picto_visor.png"];
         picto_list: string[] = [];
