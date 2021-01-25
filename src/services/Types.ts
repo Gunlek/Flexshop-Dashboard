@@ -38,6 +38,12 @@ export interface Section {
     section_sort_index: number
 }
 
+export interface Tutorial {
+    machine_id: number,
+    machine_name: string,
+    machine_slides: Slide[]
+}
+
 export interface Parameter {
     parameter_id: number,
     parameter_section: number,

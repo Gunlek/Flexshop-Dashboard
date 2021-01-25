@@ -1,10 +1,12 @@
 import { getMachineSections } from '@/components/MachineCard/functions/getMachineSections';
-import { Category, Machine, Parameter, Section, Workshop } from '@/services/Types';
+import { Category, Machine, Parameter, Section, Tutorial, Workshop } from '@/services/Types';
 import { getCategoryList } from '@/views/functions/getCategoryList';
 import { getMachineList } from '@/views/functions/getMachineList';
 import { getWorkshopList } from '@/views/functions/getWorkshopList';
 import Vue from 'vue'
 import Vuex from 'vuex'
+
+import actions from './actions';
 
 Vue.use(Vuex)
 
@@ -26,7 +28,8 @@ export default new Vuex.Store({
     categories: [] as Category[],
     editedSection: null as Section|null,
     editedParameters: null as Parameter[]|null,
-    edition: false
+    edition: false,
+    tutorials: [] as Tutorial[]
   },
   mutations: {
     setDeletion(state, val): void {
@@ -117,51 +120,5 @@ export default new Vuex.Store({
       state.edition = enabled;
     }
   },
-  actions: {
-    setDeletion(context, val): void {
-      context.commit("setDeletion", val);
-    },
-
-    setAddition(context, val): void {
-      context.commit("setAddition", val);
-    },
-
-    refreshWorkshops(context): void {
-      context.commit("getWorkshops");
-    },
-
-    refreshWorkshopsCategories(context): void {
-      context.commit("getWorkshopsCategories");
-    },
-
-    refreshCategoriesMachines(context): void {
-      context.commit("getCategoriesMachines");
-    },
-
-    refreshCategories(context): void {
-      context.commit("getCategories");
-    },
-
-    refreshMachines(context): void {
-      context.commit("getMachines");
-    },
-
-    refreshMachineSections(context): void {
-      context.commit("getMachineSections");
-    },
-
-    editSection(context, payload: {
-      section: Section;
-      parameters: Parameter[];
-    }): void {
-      context.commit("setEditedSection", payload);
-      context.commit("editionEnabled", true);
-    },
-
-    stopEdition(context): void {
-      context.commit("editionEnabled", false);
-    }
-  },
-  modules: {
-  }
+  actions
 })
