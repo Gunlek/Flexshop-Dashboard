@@ -1,6 +1,6 @@
 <template>
-    <div class="categories">
-        <h1>Catégories</h1>
+    <div class="tutorials">
+        <h1>Tutoriels</h1>
     </div>
 </template>
 
@@ -8,5 +8,5 @@
     import { Component, Vue } from 'vue-property-decorator';
 
     @Component
-    export default class Categories extends Vue {}
+    export default class Tutorials extends Vue {}
 </script>

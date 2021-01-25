@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import Home from '../views/Home.vue'
-import Categories from '../views/Categories.vue';
+import Home from '../views/Home.vue';
+import Tutorials from '../views/Tutorials.vue';
 import Machines from '../views/Machines.vue';
 import Workshops from '../views/Workshops.vue';
 
@@ -14,9 +14,9 @@ const routes: Array<RouteConfig> = [
     component: Home
   },
   {
-    path: '/categories',
-    name: 'Categories',
-    component: Categories
+    path: '/tutorials',
+    name: 'Tutorials',
+    component: Tutorials
   },
   {
     path: '/machines',
