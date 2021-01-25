@@ -1,5 +1,5 @@
 <template>
-    <div :class="!vertical && 'table-card'">
+    <div :class="vertical ? 'card align-parent' : 'table-card'">
         <h4>Créer une nouvelle machine</h4>
         <input type="text" class="content-fluid form-control" v-model="machineTitle" placeholder="Nom de la nouvelle machine..."/>
         <select v-model="machineCategory" class="form-control content-fluid" v-if="fixedCategory < 0">
