@@ -1,6 +1,6 @@
 import { buildInlinePayload } from '@/services/BuildInlinePayload';
 
-const baseAPI = "http://127.0.0.1:58/";
+const baseAPI = process.env.VUE_APP_API;
 
 interface PlainJSON {
     [key: string]: string|number|null;
