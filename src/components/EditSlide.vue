@@ -10,7 +10,7 @@
                     <label>Titre de la slide:</label>
                     <input type="text" class="form-control" v-model="slideTitle">
                 </div>
-                <ImageUploader label="Image associée" :imageName.sync="uploadImageNameEditChange" :image.sync="slideImage"/>
+                <ImageUploader label="Image associée" :imageName.sync="uploadImageNameChange" :image.sync="slideImage"/>
                 <div class="form-group">
                     <label>Description</label>
                     <textarea rows="5" class="form-control" name="update_slide_description" v-model="slideDescription"></textarea>
@@ -24,7 +24,7 @@
 
 <script lang="ts">
     import { PUTRequest, uploadImage } from '@/services/APIRequest';
-    import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+    import { Component, Vue, Watch } from 'vue-property-decorator';
     import ImageUploader from '@/components/ImageUploader.vue';
 
     @Component({
