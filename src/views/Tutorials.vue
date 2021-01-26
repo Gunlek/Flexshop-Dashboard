@@ -42,33 +42,7 @@
                 </div>
             </div>
 
-            <!-- <div class="table-card full-parent-height" id="add_machine" v-if="enableAdding">
-                <h4>Créer un nouveau tutoriel</h4>
-                <div class="form-group">
-                    <select v-model="new_tutorial_machine" class="form-control">
-                        <option value="-1" selected disabled>Choisissez une machine</option>
-                        <option v-for="machine in machine_list" v-bind:value="machine.machine_id">${machine.machine_brand} ${machine.machine_reference}</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Titre de la slide</label>
-                    <input type="text" class="form-control" v-model="new_slide_title"/>
-                </div>
-                <div class="form-group">
-                    <label>Image associée</label>
-                    <div class="file-selector">
-                        <label for="new_slide_image" class="btn btn-outline-blue">${new_slide_image_name}</label>
-                        <input type="file" name="new_slide_image" @change="processFile" id="new_slide_image" class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea class="form-control" rows="5" v-model="new_slide_description"></textarea>
-                </div>
-
-                <button type="button" @click="add_new_tutorial()" class="content-fluid btn btn-outline-green">Créer</button>
-            </div> -->
+            <CreateTutorial />
         </div>
 
         <EditSlide v-if="$store.state.edition" />
@@ -82,12 +56,14 @@
     import CreateSlide from '@/components/CreateSlide.vue';
     import { Slide } from '@/services/Types';
     import EditSlide from '@/components/EditSlide.vue';
+    import CreateTutorial from '@/components/CreateTutorial.vue';
 
     @Component({
         components: {
             VueFeather,
             CreateSlide,
-            EditSlide
+            EditSlide,
+            CreateTutorial
         }
     })
     export default class Tutorials extends Vue {
