@@ -5,6 +5,7 @@ import Tutorials from '../views/Tutorials.vue';
 import Machines from '../views/Machines.vue';
 import Workshops from '../views/Workshops.vue';
 import Credits from '../views/Credits.vue';
+import Settings from '../views/Settings.vue';
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes: Array<RouteConfig> = [
     path: '/credits',
     name: 'Credits',
     component: Credits
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: Settings
   }
 ]
 
