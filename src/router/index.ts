@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import Home from '../views/Home.vue';
 import Tutorials from '../views/Tutorials.vue';
 import Machines from '../views/Machines.vue';
 import Workshops from '../views/Workshops.vue';
