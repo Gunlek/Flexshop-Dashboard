@@ -1,4 +1,4 @@
-import { Category, Machine, Parameter, Section, Tutorial, Workshop } from '@/services/Types';
+import { Category, Machine, Parameter, Section, Tutorial, Workshop, Slide } from '@/services/Types';
 import Vue from 'vue'
 import Vuex from 'vuex'
 import mutations from './mutations';
@@ -28,7 +28,8 @@ export default new Vuex.Store({
     edition: false,
     tutorials: {} as {
       [machineId: number]: Tutorial;
-    }
+    },
+    editedSlide: null as Slide|null,
   },
   mutations,
   actions

@@ -19,7 +19,7 @@
                 <div style="position: relative;">
                     <!-- <draggable :list="tutorial.slides" @change="" style="display: inline;"> -->
                         <div class="card align-parent card-hover" v-for="slide in tutorial.machine_slides" :key="slide.slide_id">
-                            <div class="card-header align-parent" style="line-break: auto; white-space: normal;" @click="editCard(slide)">
+                            <div class="card-header align-parent" style="line-break: auto; white-space: normal;" @click="editSlide(slide)">
                                 <div class="row">
                                     <div class="col-11">
                                         <strong class="card-title">{{ slide.slide_title }}</strong>
@@ -70,6 +70,8 @@
                 <button type="button" @click="add_new_tutorial()" class="content-fluid btn btn-outline-green">Créer</button>
             </div> -->
         </div>
+
+        <EditSlide v-if="$store.state.edition" />
     </div>
 </template>
 
@@ -78,15 +80,19 @@
     import VueFeather from 'vue-feather';
     import { DELETERequest } from '@/services/APIRequest';
     import CreateSlide from '@/components/CreateSlide.vue';
-import { Slide } from '@/services/Types';
+    import { Slide } from '@/services/Types';
+    import EditSlide from '@/components/EditSlide.vue';
 
     @Component({
         components: {
             VueFeather,
-            CreateSlide
+            CreateSlide,
+            EditSlide
         }
     })
     export default class Tutorials extends Vue {
+
+        editedSlide: Slide|null = null;
 
         mounted(){
             this.$store.dispatch("refreshTutorials");
@@ -107,7 +113,9 @@ import { Slide } from '@/services/Types';
         }
 
         editSlide(slide: Slide): void {
-            // TODO
+            this.$store.dispatch("editSlide", {
+                slide: slide
+            });
         }
 
         get addition(){

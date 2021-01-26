@@ -9,6 +9,7 @@ import setAddition from './actions/setAddition';
 import setDeletion from './actions/setDeletion';
 import stopEdition from './actions/stopEdition';
 import refreshTutorials from './actions/refreshTutorials';
+import editSlide from './actions/editSlide';
 
 export default {
     editSection,
@@ -21,5 +22,6 @@ export default {
     setAddition,
     setDeletion,
     stopEdition,
-    refreshTutorials
+    refreshTutorials,
+    editSlide
 }

@@ -9,6 +9,7 @@ import setAddition from './mutations/setAddition';
 import setDeletion from './mutations/setDeletion';
 import setEditedSection from './mutations/setEditedSection';
 import getTutorials from './mutations/getTutorials';
+import setEditedSlide from './mutations/setEditedSlide';
 
 export default {
     editionEnabled,
@@ -21,5 +22,6 @@ export default {
     setAddition,
     setDeletion,
     setEditedSection,
-    getTutorials
+    getTutorials,
+    setEditedSlide
 }
