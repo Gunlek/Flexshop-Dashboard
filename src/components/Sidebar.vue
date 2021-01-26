@@ -10,8 +10,8 @@
 
         <div class="bottom">
             <ul>
-                <li><router-link to="/settings">Options</router-link></li>
-                <li><router-link to="/credits">Crédits</router-link></li>
+                <li :class="currentPage == 'Options' && 'active'"><router-link to="/settings">Options</router-link></li>
+                <li :class="currentPage == 'Credits' && 'active'"><router-link to="/credits">Crédits</router-link></li>
             </ul>
         </div>
     </nav>
