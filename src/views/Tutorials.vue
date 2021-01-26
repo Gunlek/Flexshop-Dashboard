@@ -1,6 +1,6 @@
 <template>
     <div class="tutorials">
-        <div class="table-body vertical-table">
+        <div :class="$store.state.edition ? 'table-body vertical-table modal-open' : 'table-body vertical-table '">
             <div class="row">
                 <div class="col-4"><h1 class="table-title">Gestion des tutoriels</h1></div>
                 <div class="col-2"></div>
@@ -31,7 +31,7 @@
                                 </div>
                                 <br/>
                                 <br/>
-                                <img v-bind:src="slide.slide_image" style="width: 100%; height: auto;"/>
+                                <img :src="slide.slide_image != '' && baseAPIPath + slide.slide_image" style="width: 100%; height: auto;"/>
                                 <br/>
                                 <p>{{ slide.slide_description }}</p>
                             </div>
@@ -124,6 +124,10 @@
 
         get deletion(){
             return this.$store.state.enableDelete;
+        }
+
+        get baseAPIPath(){
+            return process.env.VUE_APP_API;
         }
 
     }

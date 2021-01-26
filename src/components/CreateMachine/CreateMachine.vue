@@ -8,24 +8,22 @@
         </select>
         <input type="text" class="content-fluid form-control" v-model="machineBrand" placeholder="Marque de la nouvelle machine..."/>
         <input type="text" class="content-fluid form-control" v-model="machineReference" placeholder="Référence de la nouvelle machine..."/>
-        <!-- // TODO: Image Uploader -->
-        <!-- <ImageUploader /> -->
-        <!-- <div class="file-selector">
-            <img :src="image_render" style="width: 100%; height: auto;"/>
-            <label for="add_image" class="btn btn-outline-blue">${image_name}</label>
-            <input type="file" @change="processFile" id="add_image" class="form-control"/>
-            <input type="hidden" class="image_editor" />
-        </div> -->
+        <!-- <ImageUploader label="Image associée" :imageName.sync="uploadImageNameChange" :image.sync="image"/> -->
         <button type="button" @click="createMachine()" class="content-fluid btn btn-outline-green">Créer</button>
     </div>
 </template>
 
 <script lang="ts">
-    import { Component, Prop, Vue } from 'vue-property-decorator';
+    import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
     import { Category } from '@/services/Types';
-    import { GETRequest, POSTRequest } from '@/services/APIRequest';
+    import { GETRequest, POSTRequest, uploadImage } from '@/services/APIRequest';
+    import ImageUploader from '@/components/ImageUploader.vue';
 
-    @Component
+    @Component({
+        components: {
+            ImageUploader
+        }
+    })
     export default class CreateMachine extends Vue {
         machineTitle = "";
         machineBrand = "";
@@ -41,9 +39,15 @@
         @Prop({ default: -1 })
         fixedCategory!: number;
 
+        imageName = "Ajouter une image";
+        uploadImageNameChange = "";
+        image = null;
+        imageUpdated = false;
+
         createMachine(): void {
             if(this.fixedCategory > 0)
                 this.machineCategory = this.fixedCategory.toString();
+            this.imageUpdated && uploadImage(this.image);
             POSTRequest('machines/add', {
                 "machine_title": this.machineTitle,
                 "machine_brand": this.machineBrand,
@@ -59,6 +63,16 @@
             GETRequest('category/list', (status: number, results: Category[]) => {
                 this.existingCategories = results;
             });
+        }
+
+        @Watch("image")
+        imageChange(){
+            this.imageUpdated = true;
+        }
+
+        @Watch("uploadImageNameChange")
+        imageNameChange(name){
+            this.imageName = "uploads/img/" + name;
         }
     }
 </script>

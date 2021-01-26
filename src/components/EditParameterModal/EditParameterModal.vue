@@ -28,16 +28,9 @@
                         <LinkList :name="parameter.parameter_id" :value="parameter.parameter_value"></LinkList>
                     </div>
 
-                    <!-- // TODO: Create a component to handle image upload -->
-                    <!-- <div v-else-if="parameter.parameter_type=='image'">
-                        <div class="file-selector">
-                            <img v-if="updateImage" :src="image_render" style="width: 100%; height: auto;"/>
-                            <img v-else :src="parameter.parameter_value" style="width: 100%; height: auto;"/>
-                            <label for="edit_image" class="btn btn-outline-blue">${image_name}</label>
-                            <input type="file" @change="processFile" id="edit_image" class="form-control"/>
-                            <input type="hidden" class="edition_input image_editor" v-bind:value="parameter.parameter_value" v-bind:name="parameter.parameter_id" />
-                        </div>
-                    </div> -->
+                    <div v-else-if="parameter.parameter_type=='image'">
+                        <ImageUploader :input="true" :inputName="parameter.parameter_id" :defaultValue="parameter.parameter_value" :imageName.sync="uploadImageNameChange" :image.sync="image"/>
+                    </div>
 
                 </div>
                     
@@ -49,20 +42,27 @@
 </template>
 
 <script lang="ts">
-    import { Component, Vue } from 'vue-property-decorator';
+    import { Component, Vue, Watch } from 'vue-property-decorator';
     import PictoList from './EditingComponents/PictoList.vue';
     import TextList from './EditingComponents/TextList.vue';
     import LinkList from './EditingComponents/LinkList.vue';
     import { PUTRequest } from '@/services/APIRequest';
+    import ImageUploader from '@/components/ImageUploader.vue';
 
     @Component({
         components: {
             PictoList,
             TextList,
-            LinkList
+            LinkList,
+            ImageUploader
         }
     })
     export default class EditParameterModal extends Vue {
+
+        imageName = "Ajouter une image";
+        uploadImageNameChange = "";
+        image = null;
+        imageUpdated = false;
 
         hideEditCard() {
             this.$store.dispatch("stopEdition")
@@ -88,6 +88,16 @@
 
             this.$store.dispatch("refreshMachineSections");
             this.hideEditCard();
+        }
+
+        @Watch("image")
+        imageChange(){
+            this.imageUpdated = true;
+        }
+
+        @Watch("uploadImageNameChange")
+        imageNameChange(name){
+            this.imageName = "uploads/img/" + name;
         }
 
     }

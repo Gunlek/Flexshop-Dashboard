@@ -67,3 +67,14 @@ export const GETRequest = (path: string, callback? : (status, results) => void) 
     httpRequest.open('GET', baseAPI + path);
     httpRequest.send();
 }
+
+export const uploadImage = (image) => {
+    const data = new FormData();
+    data.append('file', image);
+
+    const imgRequest = new XMLHttpRequest();
+    imgRequest.open('POST', baseAPI + 'upload-file');
+    /* imgRequest.addEventListener('load', () => {
+    }); */
+    imgRequest.send(data);
+}

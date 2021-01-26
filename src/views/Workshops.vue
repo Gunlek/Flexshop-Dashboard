@@ -1,7 +1,7 @@
 <template>
     <transition name="slide">
         <div class="machines">
-            <div class="horizontal-table table-body">
+            <div class="$store.state.edition ? 'table-body horizontal-table modal-open' : 'table-body horizontal-table '">
                 <div class="row">
                     <div class="col-4"><h1 class="table-title">Gestion des ateliers</h1></div>
                     <div class="col-2"></div>
@@ -86,7 +86,6 @@
         
 
         deleteWorkshop(workshopId: number){
-            // TODO: Should be recursive (delete associated categories and machines)
             DELETERequest(`workshops/delete/${workshopId}`, () => {
                 this.$store.dispatch("refreshWorkshops");
                 this.$store.dispatch("refreshMachines");
@@ -94,7 +93,6 @@
         }
 
         deleteCategory(categoryId: number){
-            // TODO: Should be recursive (delete associated machines)
             DELETERequest(`category/delete/${categoryId}`, () => {
                 this.$store.dispatch("refreshWorkshops");
                 this.$store.dispatch("refreshMachines");
@@ -102,7 +100,6 @@
         }
 
         deleteMachine(machineId: number){
-            // TODO: Should be recursive
             DELETERequest(`machines/delete/${machineId}`, () => {
                 this.$store.dispatch("refreshWorkshops");
                 this.$store.dispatch("refreshMachines");

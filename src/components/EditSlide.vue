@@ -10,17 +10,9 @@
                     <label>Titre de la slide:</label>
                     <input type="text" class="form-control" v-model="slideTitle">
                 </div>
-                <!-- // TODO -->
-                <!-- <div class="form-group">
-                    <label>Image associée</label>
-                    <img v-if="!updateImage" v-bind:src="edit_data.slide_image" style="width: 100%; height: auto;" />
-                    <div class="file-selector">
-                        <label v-bind:for="edit_data_slide_img" class="btn btn-outline-blue">{{ new_slide_image_name }}</label>
-                        <input type="file" @change="processFile" v-bind:id="edit_data_slide_img" class="form-control" />
-                    </div>
-                </div> -->
+                <ImageUploader label="Image associée" :imageName.sync="uploadImageNameEditChange" :image.sync="slideImage"/>
                 <div class="form-group">
-                    <label></label>
+                    <label>Description</label>
                     <textarea rows="5" class="form-control" name="update_slide_description" v-model="slideDescription"></textarea>
                 </div>
                 <br/><br/>
@@ -31,14 +23,23 @@
 </template>
 
 <script lang="ts">
-    import { PUTRequest } from '@/services/APIRequest';
-import { Component, Vue } from 'vue-property-decorator';
+    import { PUTRequest, uploadImage } from '@/services/APIRequest';
+    import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+    import ImageUploader from '@/components/ImageUploader.vue';
 
-    @Component
+    @Component({
+        components: {
+            ImageUploader
+        }
+    })
     export default class EditSlide extends Vue {
 
         slideTitle = this.slide.slide_title;
         slideDescription = this.slide.slide_description;
+        slideImageName = "";
+        uploadImageNameChange = "";
+        slideImage = null;
+        imageUpdated = false;
 
         hideEditCard() {
             this.$store.dispatch("stopEdition")
@@ -48,17 +49,43 @@ import { Component, Vue } from 'vue-property-decorator';
             return this.$store.state.editedSlide;
         }
 
-        updateSlide(slideId: number) {
-            PUTRequest(`slides/update/${slideId}`, {
-                slide_title: this.slideTitle,
-                slide_image: "",        // TODO
-                slide_description: this.slideDescription
-            }, () => {
-                this.$store.dispatch("refreshTutorials");
-                this.$store.dispatch("stopEdition");
-            });
+        @Watch("$store.state.editedSlide")
+        editedSlideChange(){
+            this.slideImageName = "";
+            this.imageUpdated = false;
         }
 
+        updateSlide(slideId: number) {
+            if(this.imageUpdated){
+                uploadImage(this.slideImage);
+                PUTRequest(`slides/update/${slideId}`, {
+                    slide_title: this.slideTitle,
+                    slide_image: this.slideImageName,
+                    slide_description: this.slideDescription
+                }, () => {
+                    this.$store.dispatch("refreshTutorials");
+                    this.$store.dispatch("stopEdition");
+                });
+            }
+            else
+                PUTRequest(`slides/update/${slideId}`, {
+                    slide_title: this.slideTitle,
+                    slide_description: this.slideDescription
+                }, () => {
+                    this.$store.dispatch("refreshTutorials");
+                    this.$store.dispatch("stopEdition");
+                });
+        }
+
+        @Watch("slideImage")
+        slideImageEditChange(){
+            this.imageUpdated = true;
+        }
+
+        @Watch("uploadImageNameChange")
+        uploadImageNameEditChange(name){
+            this.slideImageName = "uploads/img/" + name;
+        }
     }
 </script>
 

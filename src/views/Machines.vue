@@ -1,7 +1,7 @@
 <template>
     <transition name="slide">
         <div class="machines">
-            <div class="horizontal-table table-body">
+            <div :class="$store.state.edition ? 'table-body horizontal-table modal-open' : 'table-body horizontal-table '">
                 <div class="row">
                     <div class="col-4"><h1 class="table-title">Gestion des machines</h1></div>
                     <div class="col-2"></div>

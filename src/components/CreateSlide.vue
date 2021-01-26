@@ -7,14 +7,7 @@
             <label>Titre de la slide</label>
             <input type="text" class="form-control" v-model="slideTitle"/>
         </div>
-        <div class="form-group">
-            <label>Image associée</label>
-            <div class="file-selector">
-                <label :for="machineId" class="btn btn-outline-blue">{{ slideImageName }}</label>
-                <!-- // TODO Image uploader -->
-                <!-- <input type="file" @change="processFile" :id="machineId" class="form-control" /> -->
-            </div>
-        </div>
+        <!-- <ImageUploader label="Image associée" :imageName.sync="uploadImageNameChange" :image.sync="slideImage"/> -->
         <div class="form-group">
             <label>Description</label>
             <textarea class="form-control" rows="5" v-model="slideDescription"></textarea>
@@ -24,10 +17,15 @@
 </template>
 
 <script lang="ts">
-    import { POSTRequest } from '@/services/APIRequest';
-import { Prop, Component, Vue } from 'vue-property-decorator';
+    import { POSTRequest, uploadImage } from '@/services/APIRequest';
+    import { Prop, Component, Vue, Watch } from 'vue-property-decorator';
+    import ImageUploader from '@/components/ImageUploader.vue';
 
-    @Component
+    @Component({
+        components: {
+            ImageUploader
+        }
+    })
     export default class CreateSlide extends Vue {
 
         @Prop({ default: -1 })
@@ -36,20 +34,35 @@ import { Prop, Component, Vue } from 'vue-property-decorator';
         @Prop({ default: 0 })
         slideIndex!: number;
 
-        slideImageName = "Ajouter une image";
         slideDescription = "";
         slideTitle = "";
 
+        slideImageName = "Ajouter une image";
+        uploadImageNameChange = "";
+        slideImage = null;
+        imageUpdated = false;
+
         createSlide(){
+            this.imageUpdated && uploadImage(this.slideImage);
             POSTRequest('slides/add', {
                 slide_machine: this.machineId,
                 slide_number: this.slideIndex,
                 slide_title: this.slideTitle,
-                slide_image: this.slideImageName,
+                slide_image: this.imageUpdated ? this.slideImageName : "",
                 slide_description: this.slideDescription
             }, () => {
                 this.$store.dispatch("refreshTutorials");
             });
+        }
+
+        @Watch("slideImage")
+        slideImageChange(){
+            this.imageUpdated = true;
+        }
+
+        @Watch("uploadImageNameChange")
+        slideImageNameChange(name){
+            this.slideImageName = "uploads/img/" + name;
         }
 
     }

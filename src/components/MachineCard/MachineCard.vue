@@ -38,7 +38,7 @@
                                     </ul>
                                 </div>
                                 <div v-else-if="parameter.parameter_type == 'image'">
-                                    <img v-bind:src="parameter.parameter_value" style="width: 100%; height: auto;" />
+                                    <img v-bind:src="baseAPIPath + parameter.parameter_value" style="width: 100%; height: auto;" />
                                 </div>
                                 <div v-else>
                                     {{ parameter.parameter_value }}
@@ -124,6 +124,10 @@
 
         get deletion(){
             return this.$store.state.enableDelete;
+        }
+
+        get baseAPIPath(){
+            return process.env.VUE_APP_API;
         }
 
     }
